@@ -28,7 +28,7 @@ export const UserList = () => {
         });
     }, [getUsers]);
 
-    if (state === 'pending')
+    if (state === undefined || state === 'pending')
         return <Loader/>;
 
     if (state === 'rejected')
@@ -71,7 +71,7 @@ export const Status = () => {
         getStatus();
     }, [getStatus]);
 
-    if (state === 'pending')
+    if (state === undefined || state === 'pending')
         return '⌛';
 
     return state === 'rejected' ? '❌' : '✔️';
