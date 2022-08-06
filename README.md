@@ -42,16 +42,11 @@ export const UserList = () => {
 };
 ```
 
-Apart from tracking regular async actions, this hook can also be used for tracking the status of a polling built on a certain async action.
+Apart from tracking regular async actions, this hook can also be used for tracking the status of a polling built on an async action.
 
 ```jsx
 import {useEffect} from 'react';
 import {useProgressiveCallback} from 'react-progressive-callback';
-
-async function fetchStatus() {
-    let response = await fetch('/status');
-    return await response.json();
-}
 
 const callbackOptions = {
     // can be a single number for a constant polling,
@@ -68,19 +63,19 @@ const callbackOptions = {
 };
 
 export const Status = () => {
-    let [state, getStatus] = useProgressiveCallback(
-        fetchStatus,
-        callbackOptions
-    );
+    let [state, pollStatus] = useProgressiveCallback(async () => {
+        let response = await fetch('/status');
+        return await response.json();
+    }, callbackOptions);
 
     useEffect(() => {
-        getStatus()
+        pollStatus()
             .catch(error => console.warn(error.message));
-    }, [getStatus]);
+    }, [pollStatus]);
 
     if (state === undefined || state === 'pending')
-        return '⌛';
+        return <span>⌛</span>;
 
-    return state === 'rejected' ? '❌' : '✔️';
+    return <span>{state === 'rejected' ? '❌' : '✔️'}</span>;
 };
 ```
