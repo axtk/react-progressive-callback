@@ -1,4 +1,4 @@
-import {useState, useCallback} from 'react';
+import {useState, useCallback, DependencyList} from 'react';
 import {schedule, ScheduleOptions} from 'skdl';
 
 export type ProgressiveCallbackState = 'pending' | 'fulfilled' | 'rejected' | undefined;
@@ -7,6 +7,7 @@ export type ProgressiveCallbackOptions<T> = ScheduleOptions<T>;
 export function useProgressiveCallback<P extends any[], T>(
     callback: (...args: P) => Promise<T> | T,
     options?: ProgressiveCallbackOptions<T | undefined>,
+    deps: DependencyList = [],
 ): [ProgressiveCallbackState, (...args: P) => Promise<T | undefined>] {
     let [callbackState, setCallbackState] = useState<ProgressiveCallbackState>();
 
@@ -32,7 +33,7 @@ export function useProgressiveCallback<P extends any[], T>(
                 throw error;
             }
         },
-        [callback, options],
+        [options, ...deps],
     );
 
     return [callbackState, enhancedCallback];
