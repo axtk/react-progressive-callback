@@ -8,25 +8,23 @@
 import {useState, useEffect} from 'react';
 import {useProgressiveCallback} from 'react-progressive-callback';
 
-async function fetchUsers() {
-    let response = await fetch('/users');
-    return await response.json();
-}
-
 export const UserList = () => {
     let [users, setUsers] = useState();
 
     // this hook returns the state of the async callback
-    let [state, getUsers] = useProgressiveCallback(fetchUsers);
+    let [state, fetchUsers] = useProgressiveCallback(async () => {
+        let response = await fetch('/users');
+        return await response.json();
+    });
 
     useEffect(() => {
-        getUsers().then(users => {
+        fetchUsers().then(users => {
             // it doesn't really matter for this example, but
             // the user list can be stored in an external store
             // instead of a local state
             setUsers(users);
         });
-    }, [getUsers]);
+    }, [fetchUsers]);
 
     if (state === undefined || state === 'pending')
         return <Loader/>;
