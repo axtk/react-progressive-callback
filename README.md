@@ -74,7 +74,7 @@ export const Status = () => {
     );
 
     useEffect(() => {
-        Promise.resolve(getStatus())
+        getStatus()
             .catch(error => console.warn(error.message));
     }, [getStatus]);
 
