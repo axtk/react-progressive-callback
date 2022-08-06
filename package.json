@@ -19,6 +19,7 @@
     "react",
     "promise",
     "async",
+    "polling",
     "pending"
   ],
   "author": "axtk",
