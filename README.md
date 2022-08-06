@@ -58,12 +58,12 @@ export const Status = () => {
         // can be a single number for a constant polling,
         // or a function for a non-constant polling
         timeout: (value, iteration) => {
-            return iteration < 5 ? 1000 : 3000;
+            return iteration < 5 ? 1000 : 5000;
         },
         // can be a fixed number setting the maximum iteration count,
         // or a function telling whether to proceed or not
         repeat: (value, iteration) => {
-            if (iteration > 5) throw new Error('timed out');
+            if (iteration > 10) throw new Error('timed out');
             return value !== 'completed';
         }
     });
