@@ -37,7 +37,7 @@ export function useProgressiveCallback<P extends any[] = any[], T = any>(
                 throw error;
             }
         },
-        [callback],
+        [callback, options],
     );
 
     return [callbackState, enhancedCallback];
