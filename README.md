@@ -75,7 +75,7 @@ export const Status = () => {
 
     useEffect(() => {
         Promise.resolve(getStatus())
-            .catch(e => console.warn(e.message));
+            .catch(error => console.warn(error.message));
     }, [getStatus]);
 
     if (state === undefined || state === 'pending')
