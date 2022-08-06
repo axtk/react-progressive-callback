@@ -7,7 +7,7 @@ export type ProgressiveCallbackOptions<T> = ScheduleOptions<T>;
 export function useProgressiveCallback<P extends any[] = any[], T = any>(
     callback: (...args: P) => Promise<T> | T,
     options?: ProgressiveCallbackOptions<T | undefined>,
-): [ProgressiveCallbackState, (...args: P) => Promise<T | undefined> | T | undefined] {
+): [ProgressiveCallbackState, (...args: P) => Promise<T | undefined>] {
     let [callbackState, setCallbackState] = useState<ProgressiveCallbackState>();
 
     let enhancedCallback = useCallback(
