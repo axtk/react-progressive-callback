@@ -55,7 +55,7 @@ export function useProgressiveCallback<P extends any[], T>(
                 throw error;
             }
         },
-        deps ? [actualOptions, ...deps] : [actualOptions],
+        deps ?? [],
     );
 
     return [callbackState, enhancedCallback];
