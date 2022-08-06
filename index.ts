@@ -1,9 +1,7 @@
-import {useState, useCallback, DependencyList} from 'react';
+import {useCallback, DependencyList} from 'react';
 import {schedule, ScheduleOptions} from 'skdl';
-
-function isDependencyList(value: unknown): value is DependencyList {
-    return Array.isArray(value);
-}
+import {isDependencyList} from './src/isDependencyList';
+import {useMountedState} from './src/useMountedState';
 
 export type ProgressiveCallbackState = 'pending' | 'fulfilled' | 'rejected' | undefined;
 export type ProgressiveCallbackOptions<T> = ScheduleOptions<T>;
@@ -24,7 +22,7 @@ export function useProgressiveCallback<P extends any[], T>(
     options?: ProgressiveCallbackOptions<T | undefined> | DependencyList,
     deps?: DependencyList,
 ): [ProgressiveCallbackState, (...args: P) => Promise<T | undefined>] {
-    let [callbackState, setCallbackState] = useState<ProgressiveCallbackState>();
+    let [callbackState, setCallbackState] = useMountedState<ProgressiveCallbackState>(undefined);
     let actualOptions: ProgressiveCallbackOptions<T | undefined> | undefined;
 
     if (isDependencyList(options)) {
