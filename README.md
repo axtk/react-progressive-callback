@@ -1,6 +1,6 @@
 # react-progressive-callback
 
-*React hook for tracking the status of async actions and pollings*
+*A React hook for tracking the state of an async action or a polling*
 
 ## Example
 
@@ -11,7 +11,8 @@ import {useProgressiveCallback} from 'react-progressive-callback';
 export const UserList = () => {
     let [users, setUsers] = useState();
 
-    // this hook returns the state of the async callback
+    // the `state` value returned from the hook reflects the state
+    // of the async `fetchUsers()` callback
     let [state, fetchUsers] = useProgressiveCallback(async () => {
         let response = await fetch('/users');
         return await response.json();
@@ -19,18 +20,17 @@ export const UserList = () => {
 
     useEffect(() => {
         fetchUsers().then(users => {
-            // it doesn't really matter for this example, but
-            // the user list can be stored in an external store
-            // instead of a local state
+            // in this example, the result is stored in a local state,
+            // but it could as well be stored in an external store
             setUsers(users);
         });
     }, [fetchUsers]);
 
-    if (state === undefined || state === 'pending')
-        return <Loader/>;
-
     if (state === 'rejected')
         return <Error/>;
+
+    if (state !== 'fulfilled') // 'pending' or undefined
+        return <Loader/>;
 
     return (
         <ul>
@@ -40,7 +40,7 @@ export const UserList = () => {
 };
 ```
 
-Apart from tracking regular async actions, this hook can also be used for tracking the status of a polling built on an async action.
+Apart from tracking regular async actions, this hook can also be used for tracking the state of a polling based on an async action.
 
 ```jsx
 import {useEffect} from 'react';
@@ -71,9 +71,9 @@ export const Status = () => {
             .catch(error => console.warn(error.message));
     }, [pollStatus]);
 
-    if (state === undefined || state === 'pending')
-        return <span>⌛</span>;
+    if (state === 'rejected')
+        return <span>❌</span>;
 
-    return <span>{state === 'rejected' ? '❌' : '✔️'}</span>;
+    return <span>{state === 'fulfilled' ? '✔️' : '⌛'}</span>;
 };
 ```
