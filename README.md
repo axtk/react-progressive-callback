@@ -46,7 +46,7 @@ Apart from tracking regular async actions, this hook can also be used for tracki
 import {useEffect} from 'react';
 import {useProgressiveCallback} from 'react-progressive-callback';
 
-const callbackOptions = {
+const pollingOptions = {
     // can be a single number for a constant polling,
     // or a function for a non-constant polling
     timeout: (value, iteration) => {
@@ -64,7 +64,7 @@ export const Status = () => {
     let [state, pollStatus] = useProgressiveCallback(async () => {
         let response = await fetch('/status');
         return await response.json();
-    }, callbackOptions);
+    }, pollingOptions);
 
     useEffect(() => {
         pollStatus()
