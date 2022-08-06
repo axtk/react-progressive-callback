@@ -63,12 +63,14 @@ export const Status = () => {
         // can be a fixed number setting the maximum iteration count,
         // or a function telling whether to proceed or not
         repeat: (value, iteration) => {
-            return value !== 'completed' && iteration < 10;
+            if (iteration > 5) throw new Error('timed out');
+            return value !== 'completed';
         }
     });
 
     useEffect(() => {
-        getStatus();
+        Promise.resolve(getStatus())
+            .catch(e => console.warn(e.message));
     }, [getStatus]);
 
     if (state === undefined || state === 'pending')
