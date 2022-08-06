@@ -24,7 +24,7 @@
   "author": "axtk",
   "license": "ISC",
   "dependencies": {
-    "skdl": "0.1.0"
+    "skdl": "0.1.1"
   },
   "peerDependencies": {
     "@types/react": ">=16.8",

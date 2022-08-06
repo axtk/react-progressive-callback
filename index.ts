@@ -31,7 +31,8 @@ export function useProgressiveCallback<P extends any[] = any[], T = any>(
 
                 setCallbackState('fulfilled');
                 return value;
-            } catch (error) {
+            }
+            catch (error) {
                 setCallbackState('rejected');
                 throw error;
             }
