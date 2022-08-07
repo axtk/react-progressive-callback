@@ -11,8 +11,7 @@ import {useProgressiveCallback} from 'react-progressive-callback';
 export const UserList = () => {
     let [users, setUsers] = useState();
 
-    // the `state` value returned from the hook reflects the state
-    // of the async `fetchUsers()` callback
+    // the `state` value reflects the state of the async callback
     let [state, fetchUsers] = useProgressiveCallback(async () => {
         let response = await fetch('/users');
         return await response.json();
