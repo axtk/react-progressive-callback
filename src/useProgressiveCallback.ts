@@ -23,17 +23,17 @@ export function useProgressiveCallback<P extends any[], T>(
     deps?: DependencyList,
 ): [ProgressiveCallbackState, (...args: P) => Promise<T | undefined>] {
     let [callbackState, setCallbackState] = useMountedState<ProgressiveCallbackState>(undefined);
-    let actualOptions: ProgressiveCallbackOptions<T | undefined> | undefined;
+    let scheduleOptions: ProgressiveCallbackOptions<T | undefined> | undefined;
 
     if (isDependencyList(options)) {
         deps = options;
-        actualOptions = undefined;
+        scheduleOptions = undefined;
     }
-    else actualOptions = options;
+    else scheduleOptions = options;
 
     let enhancedCallback = useCallback(
         (...args: P): Promise<T | undefined> => {
-            let progressiveCallback = schedule(callback, actualOptions);
+            let progressiveCallback = schedule(callback, scheduleOptions);
             try {
                 let value = progressiveCallback(...args);
 
