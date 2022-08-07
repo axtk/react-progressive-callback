@@ -49,13 +49,14 @@ import {useProgressiveCallback} from 'react-progressive-callback';
 const pollingOptions = {
     // can be a single number for a constant polling,
     // or a function for a non-constant polling
-    timeout: (value, iteration) => {
+    delay: (value, iteration) => {
         return iteration < 5 ? 1000 : 5000;
     },
     // can be a fixed number setting the maximum iteration count,
     // or a function telling whether to proceed or not
     repeat: (value, iteration) => {
-        if (iteration > 10) throw new Error('timed out');
+        if (iteration > 10)
+            throw new Error('too many iterations');
         return value !== 'completed';
     }
 };
