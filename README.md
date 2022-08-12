@@ -77,3 +77,5 @@ export const Status = () => {
     return <span>{state === 'fulfilled' ? '✔️' : '⌛'}</span>;
 };
 ```
+
+As an additional parameter, the hook accepts an array of dependencies (defaulting to `[]`) serving the same purpose as with the React's `useCallback()` hook.
