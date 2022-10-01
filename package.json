@@ -1,6 +1,6 @@
 {
   "name": "react-progressive-callback",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "React hook for tracking the status of async actions",
   "main": "dist/index.js",
   "type": "module",
