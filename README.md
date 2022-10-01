@@ -40,3 +40,21 @@ export const UserList = () => {
     );
 };
 ```
+
+The `useProgressiveCallback()` hook is designed to be a handy replacement for the React's `useCallback()` hook once the state of the async callback becomes relevant. We could have started with something like:
+
+```jsx
+let fetchUsers = useCallback(async () => {
+    let response = await fetch('/users');
+    return await response.json();
+}, []);
+```
+
+and as soon as the state of this callback became required, we only had to make a slight adjustment to the code:
+
+```jsx
+let [state, fetchUsers] = useProgressiveCallback(async () => {
+    let response = await fetch('/users');
+    return await response.json();
+}, []);
+```
