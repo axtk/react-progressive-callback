@@ -1,6 +1,6 @@
 # react-progressive-callback
 
-*A React hook for tracking the state of an async action or a polling*
+*A React hook for tracking the state of async actions*
 
 ## Example
 
@@ -36,45 +36,6 @@ export const UserList = () => {
             {users.map(({id, name}) => <li key={id}>{name}</li>)}
         </ul>
     );
-};
-```
-
-Apart from tracking regular async actions, this hook can also be used for tracking the state of a polling based on an async action.
-
-```jsx
-import {useEffect} from 'react';
-import {useProgressiveCallback} from 'react-progressive-callback';
-
-const pollingOptions = {
-    // can be a single number for a constant polling,
-    // or a function for a non-constant polling
-    delay: (value, iteration) => {
-        return iteration < 5 ? 1000 : 5000;
-    },
-    // can be a fixed number setting the maximum iteration count,
-    // or a function telling whether to proceed or not
-    repeat: (value, iteration) => {
-        if (iteration > 10)
-            throw new Error('too many iterations');
-        return value !== 'completed';
-    }
-};
-
-export const Status = () => {
-    let [state, pollStatus] = useProgressiveCallback(async () => {
-        let response = await fetch('/status');
-        return await response.json();
-    }, pollingOptions);
-
-    useEffect(() => {
-        pollStatus()
-            .catch(error => console.warn(error.message));
-    }, [pollStatus]);
-
-    if (state === 'rejected')
-        return <span>❌</span>;
-
-    return <span>{state === 'fulfilled' ? '✔️' : '⌛'}</span>;
 };
 ```
 

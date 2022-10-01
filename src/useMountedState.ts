@@ -12,10 +12,10 @@ export function useMountedState<S>(initialState: S): [S, (state: S) => void] {
         };
     }, []);
 
-    let setStateSafely = useCallback((state: S): void => {
+    let setMountedState = useCallback((state: S): void => {
         if (mounted.current)
             setState(state);
     }, []);
 
-    return [state, setStateSafely];
+    return [state, setMountedState];
 }
