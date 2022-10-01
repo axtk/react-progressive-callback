@@ -5,7 +5,7 @@ export type ProgressiveCallbackState = 'pending' | 'fulfilled' | 'rejected' | un
 
 export function useProgressiveCallback(
     callback: (...args: any[]) => any,
-    deps?: DependencyList,
+    deps: DependencyList,
 ): [ProgressiveCallbackState, typeof callback] {
     let [callbackState, setCallbackState] = useMountedState<ProgressiveCallbackState>(undefined);
 
@@ -36,7 +36,7 @@ export function useProgressiveCallback(
                 throw error;
             }
         },
-        deps ?? [],
+        deps,
     );
 
     return [callbackState, enhancedCallback];

@@ -15,7 +15,9 @@ export const UserList = () => {
     let [state, fetchUsers] = useProgressiveCallback(async () => {
         let response = await fetch('/users');
         return await response.json();
-    });
+    }, []);
+    // the second parameter of the hook is an array of dependencies
+    // serving the same purpose as in the React's `useCallback()` hook
 
     useEffect(() => {
         fetchUsers().then(users => {
@@ -38,5 +40,3 @@ export const UserList = () => {
     );
 };
 ```
-
-As an additional parameter, the hook accepts an array of dependencies (defaulting to `[]`) serving the same purpose as with the React's `useCallback()` hook.
