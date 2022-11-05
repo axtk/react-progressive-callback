@@ -19,8 +19,7 @@
   "keywords": [
     "react",
     "promise",
-    "async",
-    "pending"
+    "async"
   ],
   "author": "axtk",
   "license": "ISC",
