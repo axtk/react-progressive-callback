@@ -1,44 +1,45 @@
 import {useCallback, DependencyList} from 'react';
 import {useMountSafeState} from './useMountSafeState';
 
-export type ProgressiveCallbackState = 'pending' | 'fulfilled' | 'rejected' | undefined;
-
-export function useProgressiveCallback<T extends Function>(
-    callback: T,
+export function useProgressiveCallback<F extends Function, E = unknown>(
+    callback: F,
     deps: DependencyList,
-): [ProgressiveCallbackState, T] {
-    let [callbackState, setCallbackState] = useMountSafeState<ProgressiveCallbackState>(undefined);
+): [boolean | undefined, F, E | undefined] {
+    let [pending, setPending] = useMountSafeState<boolean | undefined>(undefined);
+    let [error, setError] = useMountSafeState<E | undefined>(undefined);
 
-    let enhancedCallback = useCallback<T>(
-        // @ts-ignore the `args` type is the same as in `callback`
+    let enhancedCallback = useCallback<F>(
+        // @ts-ignore `args` are of the same type as in `callback`
         (...args) => {
             try {
+                setError(undefined);
+
                 let value = callback(...args);
 
                 if (value instanceof Promise) {
-                    setCallbackState('pending');
+                    setPending(true);
+
                     return value
-                        .then(resolvedValue => {
-                            setCallbackState('fulfilled');
-                            return resolvedValue;
-                        })
                         .catch(error => {
-                            setCallbackState('rejected');
-                            throw error;
+                            setError(error);
+                        })
+                        .finally(() => {
+                            setPending(false);
                         });
                 }
                 else {
-                    setCallbackState('fulfilled');
+                    setPending(false);
+
                     return value;
                 }
             }
             catch (error) {
-                setCallbackState('rejected');
-                throw error;
+                setPending(false);
+                setError(error as E);
             }
         },
         deps,
     );
 
-    return [callbackState, enhancedCallback];
+    return [pending, enhancedCallback, error];
 }
