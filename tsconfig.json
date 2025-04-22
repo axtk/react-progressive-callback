@@ -1,8 +1,8 @@
 {
     "include": ["index.ts"],
     "compilerOptions": {
-        "lib": ["esnext", "dom"],
-        "target": "esnext",
+        "lib": ["ESNext", "DOM"],
+        "target": "ESNext",
         "outDir": "dist",
         "moduleResolution": "node",
         "strict": true,
