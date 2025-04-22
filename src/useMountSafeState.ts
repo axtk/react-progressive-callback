@@ -1,6 +1,6 @@
 import {useState, useRef, useEffect, useCallback} from 'react';
 
-export function useMountedState<S>(initialState: S): [S, (state: S) => void] {
+export function useMountSafeState<S>(initialState: S): [S, (state: S) => void] {
     let [state, setState] = useState<S>(initialState);
     let mounted = useRef(false);
 
@@ -12,10 +12,10 @@ export function useMountedState<S>(initialState: S): [S, (state: S) => void] {
         };
     }, []);
 
-    let setMountedState = useCallback((state: S): void => {
+    let setMountSafeState = useCallback((state: S): void => {
         if (mounted.current)
             setState(state);
     }, []);
 
-    return [state, setMountedState];
+    return [state, setMountSafeState];
 }

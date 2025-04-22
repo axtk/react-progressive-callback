@@ -1,5 +1,5 @@
 import {useCallback, DependencyList} from 'react';
-import {useMountedState} from './useMountedState';
+import {useMountSafeState} from './useMountSafeState';
 
 export type ProgressiveCallbackState = 'pending' | 'fulfilled' | 'rejected' | undefined;
 
@@ -7,7 +7,7 @@ export function useProgressiveCallback<T extends Function>(
     callback: T,
     deps: DependencyList,
 ): [ProgressiveCallbackState, T] {
-    let [callbackState, setCallbackState] = useMountedState<ProgressiveCallbackState>(undefined);
+    let [callbackState, setCallbackState] = useMountSafeState<ProgressiveCallbackState>(undefined);
 
     let enhancedCallback = useCallback<T>(
         // @ts-ignore the `args` type is the same as in `callback`
